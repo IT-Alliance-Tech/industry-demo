@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Speed, Security, BarChart } from '@mui/icons-material';
 
 export default function FeaturesSection() {
-  const features = [
+      const features = [
     {
       icon: Speed,
       title: "Fast & Efficient",

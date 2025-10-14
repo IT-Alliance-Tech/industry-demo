@@ -1,0 +1,47 @@
+'use client'; // Important for Framer Motion
+
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import StartupImg from '../../public/herosection.png'; // Make sure this image exists
+
+export default function HeroSection() {
+  return (
+    <section className="relative h-[70vh] flex items-center justify-center text-white overflow-hidden">
+      
+      {/* 🔹 Background Image */}
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src={StartupImg}
+          alt="Startup Background"
+          layout="fill"
+          objectFit="cover"
+          className="opacity-90"
+          priority
+        />
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-black/50"></div>
+      </div>
+
+      {/* 🔹 Text Content */}
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="text-center max-w-3xl px-6"
+      >
+        <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-lg">
+          Solutions for Startups & Growing Businesses
+        </h2>
+        <p className="text-lg md:text-xl mb-8 opacity-90">
+          Explore industry-specific demos and see how our tools improve efficiency and ROI.
+        </p>
+        <a
+          href="#industries"
+          className="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition duration-300 shadow-lg hover:shadow-xl"
+        >
+          Explore Demos
+        </a>
+      </motion.div>
+    </section>
+  );
+}

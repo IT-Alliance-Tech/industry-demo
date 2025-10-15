@@ -106,7 +106,7 @@ export default function TestimonialsSection() {
             {/* Quote */}
             <FormatQuote className="text-blue-300 text-5xl mb-6 z-10" />
             <p className="text-gray-700 text-lg md:text-xl font-medium italic text-center leading-relaxed z-10 break-words">
-              "{testi.feedback}"
+             {` "${testi.feedback}"`}
             </p>
 
             {/* Client info */}

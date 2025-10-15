@@ -22,7 +22,7 @@ export default function ContactPage() {
         >
           <h1 className="text-5xl font-bold text-blue-600 mb-4">Get in Touch</h1>
           <p className="text-gray-700 text-lg md:text-xl">
-            We'd love to hear from you! Whether you have questions, want a demo, or need support, reach out to us.
+            {"We'd love to hear from you! Whether you have questions, want a demo, or need support, reach out to us."}
           </p>
         </motion.div>
 

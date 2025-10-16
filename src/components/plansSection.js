@@ -30,7 +30,7 @@ const plans = [
 
 export default function PlansSection() {
   return (
-    <section className="py-20 bg-gray-50 relative overflow-hidden">
+    <section id="plans" className="py-20 bg-gray-50 relative overflow-hidden">
       {/* Heading */}
       <motion.h2
         initial={{ opacity: 0, y: -40 }}

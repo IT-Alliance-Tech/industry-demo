@@ -8,7 +8,7 @@ import Footer from '../../components/footer';
 import MediumImg from '../../../public/largescale.png';
 import { Bolt, BarChart, Security } from '@mui/icons-material';
 
-export default function MediumScale() {
+   export default function MediumScale() {
   const features = [
     { icon: <Bolt className="text-blue-600 text-7xl" />, title: "High Performance", description: "Optimized workflows to keep your business efficient and fast." },
     { icon: <Security className="text-blue-600 text-7xl" />, title: "Secure & Reliable", description: "Top-notch security and cloud infrastructure for data protection." },

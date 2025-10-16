@@ -5,6 +5,19 @@ import Image from 'next/image';
 import StartupImg from '../../public/herosection.png'; // Make sure this image exists
 
 export default function HeroSection() {
+
+  // Smooth scroll handler
+  const handleScroll = (e) => {
+    e.preventDefault();
+    const target = document.querySelector('#industries');
+    if (target) {
+      window.scrollTo({
+        top: target.offsetTop - 80, // Adjust if you have a fixed header
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
     <section className="relative h-[70vh] flex items-center justify-center text-white overflow-hidden">
       
@@ -13,9 +26,8 @@ export default function HeroSection() {
         <Image
           src={StartupImg}
           alt="Startup Background"
-          layout="fill"
-          objectFit="cover"
-          className="opacity-90"
+          fill
+          className="object-cover opacity-90"
           priority
         />
         {/* Dark overlay for readability */}
@@ -35,12 +47,12 @@ export default function HeroSection() {
         <p className="text-lg md:text-xl mb-8 opacity-90">
           Explore industry-specific demos and see how our tools improve efficiency and ROI.
         </p>
-        <a
-          href="#industries"
+        <button
+          onClick={handleScroll}
           className="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition duration-300 shadow-lg hover:shadow-xl"
         >
           Explore Demos
-        </a>
+        </button>
       </motion.div>
     </section>
   );

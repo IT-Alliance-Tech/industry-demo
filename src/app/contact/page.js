@@ -37,7 +37,7 @@ export default function ContactPage() {
           >
             {/* Decorative animated circles */}
             <div className="absolute -top-10 -left-10 w-32 h-32 bg-blue-200 rounded-full opacity-30 animate-pulse"></div>
-            <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-200 rounded-full opacity-30 animate-pulse"></div>
+               <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-200 rounded-full opacity-30 animate-pulse"></div>
 
             <div className="mb-6">
               <label className="block mb-2 font-semibold text-gray-700">Name</label>

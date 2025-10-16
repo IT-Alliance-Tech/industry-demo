@@ -51,7 +51,7 @@ export default function HeroSection() {
           onClick={handleScroll}
           className="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition duration-300 shadow-lg hover:shadow-xl"
         >
-          Explore Demos
+               Explore Demos
         </button>
       </motion.div>
     </section>

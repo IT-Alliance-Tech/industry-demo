@@ -10,12 +10,12 @@ export default function Header() {
   const [scroll, setScroll] = useState(false);
 
   const navItems = [
-    { name: 'Home', href: '#' },
-    { name: 'About', href: '#about' },
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/about' },
     { name: 'Industries', href: '#industries' },
     { name: 'Features', href: '#features' },
     { name: 'Testimonials', href: '#testimonials' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   // Change shadow on scroll
@@ -27,10 +27,25 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Smooth scroll for in-page links
+  const handleScrollClick = (e, href) => {
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        window.scrollTo({
+          top: target.offsetTop - 80, // header height offset
+          behavior: 'smooth',
+        });
+        setIsOpen(false); // close mobile menu
+      }
+    }
+  };
+
   return (
     <header className={`fixed w-full z-50 transition-all ${scroll ? 'bg-white shadow-lg' : 'bg-white'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center h-20">
-        
+
         {/* Logo */}
         <Link href="/">
           <motion.h1
@@ -38,6 +53,13 @@ export default function Header() {
             animate={{ y: 0, opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 120, damping: 12 }}
             className="text-2xl md:text-3xl font-extrabold text-blue-600 cursor-pointer hover:scale-110 transition-transform"
+            onClick={(e) => {
+              // Scroll to top if already on home page
+              if (window.location.pathname === '/') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
           >
             StartupX
           </motion.h1>
@@ -53,13 +75,13 @@ export default function Header() {
               transition={{ delay: idx * 0.1, duration: 0.4 }}
               className="relative group"
             >
-              <Link
+              <a
                 href={item.href}
+                onClick={(e) => handleScrollClick(e, item.href)}
                 className="text-gray-800 font-medium text-lg transition-colors hover:text-blue-600"
               >
                 {item.name}
-              </Link>
-              {/* Animated underline */}
+              </a>
               <motion.div
                 className="absolute left-0 bottom-0 h-1 w-0 bg-blue-600 rounded"
                 whileHover={{ width: '100%' }}
@@ -97,13 +119,13 @@ export default function Header() {
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: idx * 0.1, duration: 0.4 }}
               >
-                <Link
+                <a
                   href={item.href}
-                  onClick={() => setIsOpen(false)}
+                  onClick={(e) => handleScrollClick(e, item.href)}
                   className="text-gray-800 text-xl font-semibold hover:text-blue-600 transition"
                 >
                   {item.name}
-                </Link>
+                </a>
               </motion.div>
             ))}
           </div>

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Facebook, Twitter, LinkedIn, Instagram } from '@mui/icons-material';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
@@ -30,20 +31,21 @@ export default function Footer() {
         >
           <h3 className="text-xl font-semibold mb-4 text-blue-600">Quick Links</h3>
           <ul className="space-y-2">
-            {["Home", "About", "Key Features & Benefits", "Testimonials", "Plans"].map((link, idx) => (
-              <motion.li
-                key={idx}
-                whileHover={{ x: 5, scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-              >
-                <a
-                  href={`#${link.toLowerCase().replace(/ /g, "-")}`}
-                  className="transition-colors duration-300 hover:text-blue-400"
-                >
-                  {link}
-                </a>
-              </motion.li>
-            ))}
+            <motion.li whileHover={{ x: 5, scale: 1.05 }} transition={{ duration: 0.3 }}>
+              <Link href="/">Home</Link>
+            </motion.li>
+            <motion.li whileHover={{ x: 5, scale: 1.05 }} transition={{ duration: 0.3 }}>
+              <Link href="/about">About</Link>
+            </motion.li>
+            <motion.li whileHover={{ x: 5, scale: 1.05 }} transition={{ duration: 0.3 }}>
+              <Link href="/#features">Features</Link>
+            </motion.li>
+            <motion.li whileHover={{ x: 5, scale: 1.05 }} transition={{ duration: 0.3 }}>
+              <Link href="/#testimonials">Testimonials</Link>
+            </motion.li>
+            <motion.li whileHover={{ x: 5, scale: 1.05 }} transition={{ duration: 0.3 }}>
+              <Link href="/#plans">Plans</Link>
+            </motion.li>
           </ul>
         </motion.div>
 
@@ -56,20 +58,12 @@ export default function Footer() {
         >
           <h3 className="text-xl font-semibold mb-4 text-blue-600">Industries</h3>
           <ul className="space-y-2">
-            {["Small-Scale", "Medium-Scale"].map((link, idx) => (
-              <motion.li
-                key={idx}
-                whileHover={{ x: 5, scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-              >
-                <a
-                  href={`#${link.toLowerCase().replace(/ /g, "-")}`}
-                  className="transition-colors duration-300 hover:text-blue-400"
-                >
-                  {link}
-                </a>
-              </motion.li>
-            ))}
+            <motion.li whileHover={{ x: 5, scale: 1.05 }} transition={{ duration: 0.3 }}>
+              <Link href="/smallscale">Small-Scale</Link>
+            </motion.li>
+            <motion.li whileHover={{ x: 5, scale: 1.05 }} transition={{ duration: 0.3 }}>
+              <Link href="/mediumscale">Medium-Scale</Link>
+            </motion.li>
           </ul>
         </motion.div>
 

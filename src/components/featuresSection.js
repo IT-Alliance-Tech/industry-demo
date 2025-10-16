@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Speed, Security, BarChart } from '@mui/icons-material';
 
 export default function FeaturesSection() {
-      const features = [
+  const features = [
     {
       icon: Speed,
       title: "Fast & Efficient",
@@ -26,14 +26,14 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <section className="pt-16 pb-24 bg-gray-50"> {/* Reduced top padding to move heading up */}
+    <section id="features" className="pt-16 pb-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 text-center">
         {/* Heading */}
         <motion.h2
-          initial={{ opacity: 0, y: 10 }}  // Slight offset for smooth animation
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-4xl md:text-5xl font-bold mb-6 text-blue-600" // Blue heading same as Industry section
+          className="text-4xl md:text-5xl font-bold mb-6 text-blue-600"
         >
           Key Features & Benefits
         </motion.h2>
@@ -60,7 +60,7 @@ export default function FeaturesSection() {
                 whileHover={{ scale: 1.05, y: -10, rotate: 1 }}
                 className="relative bg-white rounded-3xl shadow-2xl overflow-hidden p-10 cursor-pointer"
               >
-                {/* Background Gradient Shapes */}
+                {/* Background Shapes */}
                 <div
                   className={`absolute -top-16 -left-16 w-72 h-72 rounded-full bg-gradient-to-tr ${feature.gradient} opacity-30 transform rotate-45`}
                 ></div>

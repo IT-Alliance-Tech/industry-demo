@@ -1,52 +1,59 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FormatQuote, RocketLaunch, BusinessCenter, Store, Person, ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
+import {
+  FormatQuote,
+  RocketLaunch,
+  BusinessCenter,
+  Store,
+  Person,
+  ArrowBackIos,
+  ArrowForwardIos,
+} from '@mui/icons-material';
+import { supabase } from '../../lib/supabase'; // Adjust if your lib is inside src
 
 export default function TestimonialsSection() {
   const [current, setCurrent] = useState(0);
+  const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const testimonials = [
-    {
-      name: "Alice Johnson",
-      role: "Founder, Small Ecommerce",
-      feedback: "The platform transformed our online store management — fast, intuitive, and reliable! Highly recommend it to anyone wanting seamless operations.",
-      icon: Store,
-      color: "from-blue-400 via-blue-500 to-blue-600",
-    },
-    {
-      name: "Rajesh Kumar",
-      role: "CTO, SaaS Startup",
-      feedback: "Amazing analytics and team management tools. Productivity improved instantly! The dashboards are super easy to use and highly customizable.",
-      icon: RocketLaunch,
-      color: "from-green-400 via-green-500 to-green-600",
-    },
-    {
-      name: "Sophie Lee",
-      role: "Owner, Local Cafe",
-      feedback: "I love how simple and effective this solution is. Perfect for small businesses like mine. Our workflow has become so much smoother and efficient.",
-      icon: BusinessCenter,
-      color: "from-purple-400 via-purple-500 to-purple-600",
-    },
-    {
-      name: "Michael Smith",
-      role: "CEO, Tech Startup",
-      feedback: "Their team understood our challenges perfectly and delivered a solution beyond expectations! Communication and support were top-notch throughout.",
-      icon: Person,
-      color: "from-pink-400 via-pink-500 to-pink-600",
-    },
-  ];
+  useEffect(() => {
+    fetchTestimonials();
+  }, []);
 
-  const prevSlide = () => setCurrent(current === 0 ? testimonials.length - 1 : current - 1);
-  const nextSlide = () => setCurrent(current === testimonials.length - 1 ? 0 : current + 1);
+  const fetchTestimonials = async () => {
+    const { data, error } = await supabase.from('testimonials').select('*');
+    console.log(data);
+    if (error) {
+      console.error('Supabase fetch error:', error.message);
+    } else {
+      setTestimonials(data);
+    }
+    setLoading(false);
+  };
+
+  const prevSlide = () =>
+    setCurrent(current === 0 ? testimonials.length - 1 : current - 1);
+  const nextSlide = () =>
+    setCurrent(current === testimonials.length - 1 ? 0 : current + 1);
   const goToSlide = (index) => setCurrent(index);
 
+  if (loading) return <p className="text-center py-10">Loading testimonials...</p>;
+  if (!testimonials.length)
+    return <p className="text-center py-10">No testimonials found.</p>;
+
   const testi = testimonials[current];
-  const Icon = testi.icon;
+
+  // Map string icon from DB to actual MUI icon
+  const iconMap = { Store, RocketLaunch, BusinessCenter, Person };
+  const Icon = iconMap[testi.icon] || Person;
 
   return (
-    <section id="testimonials" className="relative py-24 bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100">
+    <section
+      id="testimonials"
+      className="relative py-24 bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100"
+    >
       <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -58,7 +65,6 @@ export default function TestimonialsSection() {
         </motion.h2>
 
         <div className="relative flex items-center justify-center">
-          {/* Left Arrow */}
           <button
             onClick={prevSlide}
             className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-lg hover:bg-blue-100 transition transform hover:scale-110 z-20"
@@ -66,7 +72,6 @@ export default function TestimonialsSection() {
             <ArrowBackIos className="text-blue-600" />
           </button>
 
-          {/* Testimonial Card */}
           <motion.div
             key={current}
             initial={{ opacity: 0, x: 60 }}
@@ -75,8 +80,16 @@ export default function TestimonialsSection() {
             transition={{ duration: 0.6 }}
             className="bg-white relative p-14 rounded-3xl shadow-2xl border border-gray-200 w-full flex flex-col items-center overflow-hidden max-h-96"
           >
-            <div className={`absolute -top-10 z-0 w-40 h-40 bg-gradient-to-br ${testi.color} rounded-full opacity-20 blur-3xl`}></div>
-            <div className={`z-10 bg-gradient-to-r ${testi.color} rounded-full p-6 mb-6 shadow-lg`}>
+            <div
+              className={`absolute -top-10 z-0 w-40 h-40 bg-gradient-to-br ${
+                testi.color || 'from-blue-400 via-blue-500 to-blue-600'
+              } rounded-full opacity-20 blur-3xl`}
+            ></div>
+            <div
+              className={`z-10 bg-gradient-to-r ${
+                testi.color || 'from-blue-400 via-blue-500 to-blue-600'
+              } rounded-full p-6 mb-6 shadow-lg`}
+            >
               <Icon className="text-white text-6xl" />
             </div>
 
@@ -91,7 +104,6 @@ export default function TestimonialsSection() {
             </div>
           </motion.div>
 
-          {/* Right Arrow */}
           <button
             onClick={nextSlide}
             className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-lg hover:bg-blue-100 transition transform hover:scale-110 z-20"
@@ -99,8 +111,6 @@ export default function TestimonialsSection() {
             <ArrowForwardIos className="text-blue-600" />
           </button>
         </div>
-
-        {/* Dots indicator */}
         <div className="flex justify-center mt-8 gap-3">
           {testimonials.map((_, idx) => (
             <button

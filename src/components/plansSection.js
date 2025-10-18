@@ -6,24 +6,27 @@ import Link from 'next/link';
 
 const plans = [
   {
+    id: 'silver',
     name: 'Silver',
     price: '$9 / month',
     icon: Star,
-    description: 'Perfect for small startups and freelancers to get started quickly.',
+    description: 'Perfect for small startups and freelancers to get started quickly. Includes basic analytics, starter templates, and essential support for early growth.',
     color: 'from-gray-300 via-gray-400 to-gray-500',
   },
   {
+    id: 'gold',
     name: 'Gold',
     price: '$29 / month',
     icon: TrendingUp,
-    description: 'Ideal for growing teams needing analytics and collaboration tools.',
+    description: 'Ideal for growing teams needing analytics and collaboration tools. Includes team dashboards, advanced reporting, and priority support to scale efficiently.',
     color: 'from-yellow-400 via-yellow-500 to-yellow-600',
   },
   {
+    id: 'diamond',
     name: 'Diamond',
     price: '$59 / month',
     icon: Business,
-    description: 'Full suite for medium businesses with unlimited users and advanced reporting.',
+    description: 'Full suite for medium businesses with unlimited users and advanced reporting. Includes all features from lower plans, dedicated support, and enterprise integrations.',
     color: 'from-purple-400 via-purple-500 to-purple-600',
   },
 ];
@@ -50,12 +53,19 @@ export default function PlansSection() {
               key={idx}
               initial={{ opacity: 0, y: 50, scale: 0.9 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: idx * 0.2, duration: 0.6, type: 'spring', stiffness: 120 }}
+              transition={{
+                delay: idx * 0.2,
+                duration: 0.6,
+                type: 'spring',
+                stiffness: 120,
+              }}
               whileHover={{ scale: 1.05, y: -5 }}
-              className="relative bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center overflow-hidden"
+              className="relative bg-white rounded-3xl shadow-2xl p-8 flex flex-col justify-between items-center text-center overflow-hidden h-full"
             >
               {/* Floating Gradient Shape */}
-              <div className={`absolute -top-6 w-24 h-24 rounded-full bg-gradient-to-tr ${plan.color} opacity-30 -z-10 animate-pulse`}></div>
+              <div
+                className={`absolute -top-6 w-24 h-24 rounded-full bg-gradient-to-tr ${plan.color} opacity-30 -z-10 animate-pulse`}
+              ></div>
 
               {/* Icon */}
               <motion.div
@@ -68,17 +78,21 @@ export default function PlansSection() {
               </motion.div>
 
               {/* Plan Info */}
-              <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-              <p className="text-lg font-semibold text-gray-800 mb-4">{plan.price}</p>
-              <p className="text-gray-600 mb-6">{plan.description}</p>
+              <div className="flex flex-col items-center flex-1 justify-between">
+                <div>
+                  <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+                  <p className="text-lg font-semibold text-gray-800 mb-4">{plan.price}</p>
+                  <p className="text-gray-600 mb-6">{plan.description}</p>
+                </div>
 
-              {/* CTA Button */}
-              <Link
-                href="/contact"
-                className="inline-block bg-blue-600 text-white font-semibold py-3 px-8 rounded-full hover:bg-blue-700 transition transform hover:scale-105"
-              >
-                Get Started
-              </Link>
+                {/* CTA Button → Linked to Subscription Page */}
+                <Link
+                  href={`/subscription?plan=${plan.id}`}
+                  className="inline-block bg-blue-600 text-white font-semibold py-3 px-8 rounded-full hover:bg-blue-700 transition transform hover:scale-105 mt-4"
+                >
+                  Get Started
+                </Link>
+              </div>
             </motion.div>
           );
         })}

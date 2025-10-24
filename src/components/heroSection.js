@@ -19,7 +19,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative h-[70vh] flex items-center justify-center text-white overflow-hidden pt-20 md:pt-32">
+    <section className="relative h-[90vh] flex items-center justify-center text-white overflow-hidden pt-20 md:pt-32">
       
       {/* 🔹 Background Image */}
       <div className="absolute inset-0 -z-10">

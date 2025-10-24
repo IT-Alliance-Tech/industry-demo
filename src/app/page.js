@@ -4,8 +4,9 @@ import FeaturesSection from "@/components/featuresSection";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import HeroSection from "@/components/heroSection";
+import HowItWorksSection from "@/components/howItWorksSection";
 import IndustriesSection from "@/components/industriesSection";
-import PlansSection from "@/components/plansSection";
+
 import TestimonialsSection from "@/components/testimonialsSection";
 import Image from "next/image";
 
@@ -18,7 +19,8 @@ export default function Home() {
       <IndustriesSection />
       <FeaturesSection />
       <TestimonialsSection />
-      <PlansSection />
+      <HowItWorksSection />
+  
       <ContactSection />
       <Footer />
 

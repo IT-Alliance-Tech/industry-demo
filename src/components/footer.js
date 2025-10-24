@@ -43,8 +43,9 @@ export default function Footer() {
             <motion.li whileHover={{ x: 5, scale: 1.05 }} transition={{ duration: 0.3 }}>
               <Link href="/#testimonials">Testimonials</Link>
             </motion.li>
+            {/* ✅ Updated How It Works Link */}
             <motion.li whileHover={{ x: 5, scale: 1.05 }} transition={{ duration: 0.3 }}>
-              <Link href="/#plans">Plans</Link>
+              <Link href="/#how-it-works">How It Works</Link>
             </motion.li>
           </ul>
         </motion.div>

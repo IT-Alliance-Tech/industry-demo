@@ -4,8 +4,54 @@ import { motion } from 'framer-motion';
 import { Email, Phone, LocationOn, Chat, Send } from '@mui/icons-material';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
+import { useState } from 'react';
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState('');
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setStatus('');
+
+    try {
+      const form = new FormData();
+      form.append('name', formData.name);
+      form.append('email', formData.email);
+      form.append('phone', formData.phone);
+      form.append('message', formData.message);
+
+      await fetch(
+        'https://script.google.com/macros/s/AKfycbwzzMNsDwxAwkCnMWBtp_rXS1IB_H9F0fJYvkkpI_6u_eEfCTAPazPNFMAwHiPDfgSe/exec',
+        {
+          method: 'POST',
+          body: form,
+          mode: 'no-cors', // Important for Google Sheets
+        }
+      );
+
+      // Cannot read response due to no-cors, assume success
+      setStatus('Form submitted successfully!');
+      setFormData({ name: '', email: '', phone: '', message: '' });
+    } catch (err) {
+      setStatus('Error: ' + err.message);
+    }
+
+    setLoading(false);
+  };
+
   return (
     <div className="bg-gray-50">
       {/* Header */}
@@ -34,17 +80,22 @@ export default function ContactPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
             className="bg-white p-10 rounded-3xl shadow-2xl relative overflow-hidden"
+            onSubmit={handleSubmit}
           >
             {/* Decorative animated circles */}
             <div className="absolute -top-10 -left-10 w-32 h-32 bg-blue-200 rounded-full opacity-30 animate-pulse"></div>
-               <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-200 rounded-full opacity-30 animate-pulse"></div>
+            <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-200 rounded-full opacity-30 animate-pulse"></div>
 
             <div className="mb-6">
               <label className="block mb-2 font-semibold text-gray-700">Name</label>
               <input
                 type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
                 placeholder="Your Name"
                 className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                required
               />
             </div>
 
@@ -52,23 +103,34 @@ export default function ContactPage() {
               <label className="block mb-2 font-semibold text-gray-700">Email</label>
               <input
                 type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 placeholder="Your Email"
                 className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                required
               />
             </div>
 
             <div className="mb-6">
-              <label className="block mb-2 font-semibold text-gray-700">Subject</label>
+              <label className="block mb-2 font-semibold text-gray-700">Phone Number</label>
               <input
-                type="text"
-                placeholder="Subject"
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Your Phone Number"
                 className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                required
               />
             </div>
 
             <div className="mb-6">
               <label className="block mb-2 font-semibold text-gray-700">Message</label>
               <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
                 placeholder="Your Message"
                 rows={6}
                 className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -81,8 +143,10 @@ export default function ContactPage() {
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-full transition transform shadow-lg flex items-center justify-center gap-2"
             >
-              Send Message <Send />
+              {loading ? 'Submitting...' : 'Send Message'} <Send />
             </motion.button>
+
+            {status && <p className="mt-4 text-center text-green-600 font-semibold">{status}</p>}
           </motion.form>
 
           {/* Contact Info */}
@@ -91,7 +155,7 @@ export default function ContactPage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="flex flex-col justify-start space-y-6 mt-10 md:mt-20" // <-- moved down
+            className="flex flex-col justify-start space-y-6 mt-10 md:mt-20"
           >
             <motion.div
               whileHover={{ scale: 1.05 }}

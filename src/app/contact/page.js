@@ -1,25 +1,26 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Email, Phone, LocationOn, Chat, Send } from '@mui/icons-material';
+import { Send, Chat, Email, Phone, LocationOn } from '@mui/icons-material';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
 import { useState } from 'react';
+import { supabase } from '../../../lib/supabase';
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
+  const [form, setForm] = useState({
     name: '',
     email: '',
+    company: '',
     phone: '',
     message: '',
+    scale: 'small',
   });
 
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,26 +28,31 @@ export default function ContactPage() {
     setStatus('');
 
     try {
-      const form = new FormData();
-      form.append('name', formData.name);
-      form.append('email', formData.email);
-      form.append('phone', formData.phone);
-      form.append('message', formData.message);
-
-      await fetch(
-        'https://script.google.com/macros/s/AKfycbwzzMNsDwxAwkCnMWBtp_rXS1IB_H9F0fJYvkkpI_6u_eEfCTAPazPNFMAwHiPDfgSe/exec',
+      const { data, error } = await supabase.from('demo_requests').insert([
         {
-          method: 'POST',
-          body: form,
-          mode: 'no-cors', // Important for Google Sheets
-        }
-      );
+          name: form.name,
+          email: form.email,
+          company: form.company,
+          phone: form.phone,
+          message: form.message,
+          scale: form.scale,
+        },
+      ]);
 
-      // Cannot read response due to no-cors, assume success
-      setStatus('Form submitted successfully!');
-      setFormData({ name: '', email: '', phone: '', message: '' });
+      if (error) throw error;
+
+      setStatus('Request submitted successfully!');
+      setForm({
+        name: '',
+        email: '',
+        company: '',
+        phone: '',
+        message: '',
+        scale: 'small',
+      });
     } catch (err) {
-      setStatus('Error: ' + err.message);
+      console.error(err);
+      setStatus('Error submitting request: ' + err.message);
     }
 
     setLoading(false);
@@ -54,10 +60,8 @@ export default function ContactPage() {
 
   return (
     <div className="bg-gray-50">
-      {/* Header */}
       <Header />
 
-      {/* Contact Section */}
       <section className="relative bg-gradient-to-r from-blue-100 to-purple-100 min-h-screen py-24 px-6">
         {/* Heading */}
         <motion.div
@@ -68,7 +72,7 @@ export default function ContactPage() {
         >
           <h1 className="text-5xl font-bold text-blue-600 mb-4">Get in Touch</h1>
           <p className="text-gray-700 text-lg md:text-xl">
-            {"We'd love to hear from you! Whether you have questions, want a demo, or need support, reach out to us."}
+            Fill out the form and our team will get in touch with you quickly.
           </p>
         </motion.div>
 
@@ -82,71 +86,81 @@ export default function ContactPage() {
             className="bg-white p-10 rounded-3xl shadow-2xl relative overflow-hidden"
             onSubmit={handleSubmit}
           >
-            {/* Decorative animated circles */}
+            {/* Animated circles */}
             <div className="absolute -top-10 -left-10 w-32 h-32 bg-blue-200 rounded-full opacity-30 animate-pulse"></div>
             <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-200 rounded-full opacity-30 animate-pulse"></div>
 
-            <div className="mb-6">
-              <label className="block mb-2 font-semibold text-gray-700">Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Your Name"
-                className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
-                required
-              />
-            </div>
-
-            <div className="mb-6">
-              <label className="block mb-2 font-semibold text-gray-700">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Your Email"
-                className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
-                required
-              />
-            </div>
-
-            <div className="mb-6">
-              <label className="block mb-2 font-semibold text-gray-700">Phone Number</label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="Your Phone Number"
-                className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
-                required
-              />
-            </div>
-
-            <div className="mb-6">
-              <label className="block mb-2 font-semibold text-gray-700">Message</label>
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="Your Message"
-                rows={6}
-                className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
+            <input
+              type="text"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Your Name"
+              className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4"
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="Email Address"
+              className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4"
+              required
+            />
+            <input
+              type="text"
+              name="company"
+              value={form.company}
+              onChange={handleChange}
+              placeholder="Company Name"
+              className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4"
+            />
+            <input
+              type="text"
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+              placeholder="Phone Number"
+              className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4"
+            />
+            <textarea
+              name="message"
+              value={form.message}
+              onChange={handleChange}
+              placeholder="Message / Demo Details"
+              rows={4}
+              className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4 resize-none"
+            />
+            <select
+              name="scale"
+              value={form.scale}
+              onChange={handleChange}
+              className="w-full p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4"
+            >
+              <option value="small">Small Scale</option>
+              <option value="medium">Medium Scale</option>
+            </select>
 
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-full transition transform shadow-lg flex items-center justify-center gap-2"
+              disabled={loading}
             >
-              {loading ? 'Submitting...' : 'Send Message'} <Send />
+              {loading ? 'Submitting...' : 'Request Demo'} <Send />
             </motion.button>
 
-            {status && <p className="mt-4 text-center text-green-600 font-semibold">{status}</p>}
+            {status && (
+              <p
+                className={`mt-4 text-center font-semibold ${
+                  status.includes('Error') ? 'text-red-500' : 'text-green-500'
+                }`}
+              >
+                {status}
+              </p>
+            )}
           </motion.form>
 
           {/* Contact Info */}
@@ -204,7 +218,6 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

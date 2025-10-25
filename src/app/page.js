@@ -6,7 +6,6 @@ import Header from "@/components/header";
 import HeroSection from "@/components/heroSection";
 import HowItWorksSection from "@/components/howItWorksSection";
 import IndustriesSection from "@/components/industriesSection";
-
 import TestimonialsSection from "@/components/testimonialsSection";
 import Image from "next/image";
 

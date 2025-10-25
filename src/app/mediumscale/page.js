@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import Header from '../../components/header';
-import Footer from '../../components/footer';
+    import Footer from '../../components/footer';
 import MediumImg from '../../../public/largescale.png';
 import { Bolt, BarChart, Security } from '@mui/icons-material';
 
